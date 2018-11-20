@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gogs
+  namespace: git
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: web
+  clusterIP: None
+  selector:
+    app: gogs
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gogs
+  namespace: git
+spec:
+  serviceName: "gogs"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gogs
+  template:
+    metadata:
+      labels:
+        app: gogs
+    spec:
+      containers:
+      - name: gogs
+        image: gogs/gogs:0.11.66@sha256:e081bba26e96b07417644205ee7d097eab13f8a0a99a4ac9c0ebb49ae93162d4
+        ports:
+        - containerPort: 3000
