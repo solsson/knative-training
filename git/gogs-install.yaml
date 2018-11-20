@@ -10,16 +10,32 @@ spec:
       - name: curl
         image: solsson/curl@sha256:92ebf15ac57bea360484480336ed5d9fa16d38d773fd00f7e9fb2cae94baf25a
         command:
-        - curl
-        - -f
-        - http://gogs-0.gogs.git:3000/install
-        - --retry-connrefused
-        - --retry
-        - '5'
-        - -H
-        - 'Content-Type: application/x-www-form-urlencoded'
-        - --data
-        - 'db_type=SQLite3&db_host=127.0.0.1%3A3306&db_user=root&db_passwd=&db_name=gogs&ssl_mode=disable&db_path=data%2Fgogs.db&app_name=Gogs&repo_root_path=%2Fdata%2Fgit%2Fgogs-repositories&run_user=git&domain=localhost&ssh_port=22&http_port=3000&app_url=http%3A%2F%2Fgit.git.svc.cluster.local%2F&log_root_path=%2Fapp%2Fgogs%2Flog&smtp_host=&smtp_from=&smtp_user=&smtp_passwd=&enable_captcha=off&admin_name=knative&admin_passwd=knative&admin_confirm_passwd=knative&admin_email=knative%40example.com'
-        - -v
+        - bash
+        - -ce
+        - >
+
+          curl -f
+          http://gogs-0.gogs.git:3000/install
+          --retry-connrefused
+          --retry 5
+          -H 'Content-Type: application/x-www-form-urlencoded'
+          --data
+          'db_type=SQLite3&db_host=127.0.0.1%3A3306&db_user=root&db_passwd=&db_name=gogs&ssl_mode=disable&db_path=data%2Fgogs.db&app_name=Gogs&repo_root_path=%2Fdata%2Fgit%2Fgogs-repositories&run_user=git&domain=localhost&ssh_port=22&http_port=3000&app_url=http%3A%2F%2Fgit.git.svc.cluster.local%2F&log_root_path=%2Fapp%2Fgogs%2Flog&smtp_host=&smtp_from=&smtp_user=&smtp_passwd=&enable_captcha=off&admin_name=knative&admin_passwd=knative&admin_confirm_passwd=knative&admin_email=knative%40example.com'
+          -v;
+
+          curl -f -u knative:knative \
+          http://git.git.svc.cluster.local/api/v1/admin/users/knative/orgs \
+          --retry 3 \
+          -H 'Content-Type:application/json' \
+          -d '{"username":"ExampleSource","full_name":"ExampleSource","description":""}' \
+          -v;
+
+          curl -f -u knative:knative \
+          http://git.git.svc.cluster.local/api/v1/admin/users/ExampleSource/repos \
+          --retry 3 \
+          -H 'Content-Type:application/json' \
+          -d '{"name":"kanikobuild","description":"","private":false}' \
+          -v;
+
       restartPolicy: Never
   backoffLimit: 4
