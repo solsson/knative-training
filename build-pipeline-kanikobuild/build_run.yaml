@@ -1,0 +1,23 @@
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: kanikobuild
+  # not sure what this is for but the examples have it
+  labels:
+    controller-tools.k8s.io: "1.0"
+spec:
+  taskRef:
+    name: build-push
+  inputs:
+    resourcesVersion:
+    - resourceRef:
+        name: kanikobuild-resources-git
+      name: workspace
+    params:
+    - name: 'makeTarget'
+      value: 'test'
+  outputs:
+    resourcesVersion:
+    - name: builtImage
+      resourcesRef:
+        name: kanikobuild-resources-image
