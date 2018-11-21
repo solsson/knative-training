@@ -21,6 +21,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	client := &http.Client{}
 
 	get, err := http.NewRequest("GET", url, nil)
+	get.Header.Add("x-request-id", reqID)
 	resp, err := client.Do(get)
 	if err != nil {
 		log.Printf("GET failed for %q\n", url)

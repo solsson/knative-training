@@ -72,3 +72,11 @@ If you have a graph, let's apply a `Route` that is independent of our example `C
 kubectl apply -f service-from-image/revisions-blue-green-route.yaml
 while true; do sleep .1 && time kcurl revisions-blue-green.default.example.com; done
 ```
+
+## Source-to-URL
+
+To make request tracing a bit more interesting, and to deponstrate source to url,
+we can interate on some code that depends on a service in the same namespace.
+
+Because I'm having problems with gcr.io at the moment which blocks local builds,
+the code is also built at https://hub.docker.com/r/solsson/knative-training-frontend.
