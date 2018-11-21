@@ -1,0 +1,13 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Route
+metadata:
+  name: revisions-blue-green
+  namespace: default
+spec:
+  traffic:
+  - revisionName: revisions-00001
+    percent: 50
+  - revisionName: revisions-00002
+    percent: 30
+  - revisionName: revisions-00003
+    percent: 20
