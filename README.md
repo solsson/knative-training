@@ -66,7 +66,7 @@ Let's dive into Knative's choice of visualizations sooner rather than later:
  * [Zipkin](https://github.com/knative/docs/blob/master/serving/accessing-traces.md) ...
  * or maybe Istio's [Jaeger](https://istio.io/docs/tasks/telemetry/distributed-tracing/#generating-traces-using-the-bookinfo-sample)
 
-If you have a graph, let's apply a `Route` that is independent of our example `Configuration` and look under the hood of Grafana using a [Prometheus](https://github.com/knative/docs/blob/master/serving/samples/telemetry-go/README.md#accessing-custom-metrics) Requests Per Second query like [`rate(istio_revision_request_count{destination_namespace="default",destination_configuration="revisions"}[1m])`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=round(rate(istio_revision_request_count%7Bdestination_namespace%3D%22default%22%2Cdestination_configuration%3D%22revisions%22%7D%5B1m%5D)%2C0.0001)&g0.tab=0):
+If you have a graph, let's apply a `Route` that is independent of our example `Configuration` and look under the hood of Grafana using a [Prometheus](https://github.com/knative/docs/blob/master/serving/samples/telemetry-go/README.md#accessing-custom-metrics) Requests Per Second query like [`rate(istio_revision_request_count{destination_configuration="revisions"}[1m])`](http://localhost:9090/graph?g0.range_input=1h&g0.expr=round(rate(istio_revision_request_count%7Bdestination_namespace%3D%22default%22%2Cdestination_configuration%3D%22revisions%22%7D%5B1m%5D)%2C0.0001)&g0.tab=0):
 
 ```
 kubectl apply -f service-from-image/revisions-blue-green-route.yaml
