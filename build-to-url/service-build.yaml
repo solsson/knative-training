@@ -1,0 +1,29 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  runLatest:
+    configuration:
+      build:
+        apiVersion: build.knative.dev/v1alpha1
+        kind: Build
+        spec:
+          source:
+            git:
+              url: http://git.git.svc.cluster.local/ExampleSource/kanikobuild.git
+              revision: master
+          template:
+            name: kaniko
+            arguments:
+            - name: IMAGE
+              value: knative.registry.svc.cluster.local/knative-training/frontend:latest
+      revisionTemplate:
+        spec:
+          container:
+            image: knative.registry.svc.cluster.local/knative-training/frontend:latest
+            imagePullPolicy: Always
+            env:
+            - name: DEPEND_ON_SERVICE
+              value: "echo.default"

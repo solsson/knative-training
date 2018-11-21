@@ -11,3 +11,6 @@ kubectl create -f knative-releases/serving/previous/v0.2.2/istio.yaml
 read -p "Press enter to continue"
 
 kubectl create -f knative-releases/serving/previous/v0.2.2/serving.yaml
+read -p "Press enter to continue"
+
+kubectl create -f knative-releases/build/previous/v0.2.0/release.yaml
