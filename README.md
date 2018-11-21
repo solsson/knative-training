@@ -1,7 +1,10 @@
 
 # Knativde Training Resources
 
-
+This guide is brief on howto stuff.
+It refers to official docs instead.
+The choice of test case detauls - images, commands etc -
+differs from these official docs to try to offer insights by slight variation.
 
 ## Local Git
 
@@ -25,7 +28,8 @@ The details depend on how you host your test cluster.
 alias kcurl="curl --connect-to :80:$(minikube ip):32380"
 ```
 
-With this alias and nothing deployed we expect a 404 using any hostname, `kcurl -vf nonexistent.example.com`.
+With this alias and nothing deployed we expect a 404 using any hostname, `kcurl -vf nonexistent.example.com`,
+assuming our cluser uses the [default hostname](https://github.com/knative/docs/blob/master/serving/using-a-custom-domain.md).
 
 ## The basic Serving example
 
@@ -35,4 +39,19 @@ https://github.com/knative/docs/blob/master/install/getting-started-knative-app.
 kubectl apply -f service-from-image/echo.yaml
 # wait and all that
 kcurl -vf echo.default.example.com
+```
+
+## New revisions using pre-built images
+
+Let's assume you have CI that builds docker images,
+and want to use the Knative revision feature for [Blue-Green Deployment](https://martinfowler.com/bliki/BlueGreenDeployment.html).
+Imagine you did some coding, and waited for Jenkins :), inbetween these steps:
+
+```
+kubectl apply -f service-from-image/revisions-1.yaml
+until kcurl revisions.default.example.com | grep Build1; do sleep 1; done;
+kubectl apply -f service-from-image/revisions-2.yaml
+until kcurl revisions.default.example.com | grep Build2; do sleep 1; done;
+kubectl apply -f service-from-image/revisions-3.yaml
+until kcurl revisions.default.example.com | grep Build3; do sleep 1; done;
 ```

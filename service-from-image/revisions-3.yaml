@@ -1,0 +1,12 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: revisions
+  namespace: default
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            image: solsson/knative-test-image@sha256:6f6efb552e93a4970b52e92785b295e539d87f0908811da0518428f81be0b53b
