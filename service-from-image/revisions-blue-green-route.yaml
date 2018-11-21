@@ -5,9 +5,12 @@ metadata:
   namespace: default
 spec:
   traffic:
-  - revisionName: revisions-00001
+  - name: v1
+    revisionName: revisions-00001
     percent: 50
-  - revisionName: revisions-00002
+  - name: v2
+    revisionName: revisions-00002
     percent: 30
-  - revisionName: revisions-00003
+  - name: v3
+    revisionName: revisions-00003
     percent: 20
