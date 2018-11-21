@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: gogs-setup
+  name: gogs-install
   namespace: git
 spec:
   template:
@@ -12,15 +12,15 @@ spec:
         command:
         - bash
         - -ce
-        - >
+        - |
 
-          curl -f
-          http://gogs-0.gogs.git:3000/install
-          --retry-connrefused
-          --retry 5
-          -H 'Content-Type: application/x-www-form-urlencoded'
-          --data
-          'db_type=SQLite3&db_host=127.0.0.1%3A3306&db_user=root&db_passwd=&db_name=gogs&ssl_mode=disable&db_path=data%2Fgogs.db&app_name=Gogs&repo_root_path=%2Fdata%2Fgit%2Fgogs-repositories&run_user=git&domain=localhost&ssh_port=22&http_port=3000&app_url=http%3A%2F%2Fgit.git.svc.cluster.local%2F&log_root_path=%2Fapp%2Fgogs%2Flog&smtp_host=&smtp_from=&smtp_user=&smtp_passwd=&enable_captcha=off&admin_name=knative&admin_passwd=knative&admin_confirm_passwd=knative&admin_email=knative%40example.com'
+          curl -f \
+          http://gogs-0.gogs.git:3000/install \
+          --retry-connrefused \
+          --retry 5 \
+          -H 'Content-Type: application/x-www-form-urlencoded' \
+          --data \
+          'db_type=SQLite3&db_host=127.0.0.1%3A3306&db_user=root&db_passwd=&db_name=gogs&ssl_mode=disable&db_path=data%2Fgogs.db&app_name=Gogs&repo_root_path=%2Fdata%2Fgit%2Fgogs-repositories&run_user=git&domain=localhost&ssh_port=22&http_port=3000&app_url=http%3A%2F%2Fgit.git.svc.cluster.local%2F&log_root_path=%2Fapp%2Fgogs%2Flog&smtp_host=&smtp_from=&smtp_user=&smtp_passwd=&enable_captcha=off&admin_name=knative&admin_passwd=knative&admin_confirm_passwd=knative&admin_email=knative%40example.com' \
           -v;
 
           curl -f -u knative:knative \
