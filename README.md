@@ -55,3 +55,13 @@ until kcurl revisions.default.example.com | grep Build2; do sleep 1; done;
 kubectl apply -f service-from-image/revisions-3.yaml
 until kcurl revisions.default.example.com | grep Build3; do sleep 1; done;
 ```
+
+## Are you having fun?
+
+We all love terminals, but [...](https://duckduckgo.com/?q=netflix+microservices&t=h_&iax=images&ia=images).
+
+Let's dive into Knative's choice of visualizations sooner rather than later:
+ * [Grafana](https://github.com/knative/docs/blob/master/serving/accessing-metrics.md) for Requests Per Second, resource utilization etc.
+ * [Prometheus](https://github.com/knative/docs/blob/master/serving/samples/telemetry-go/README.md#accessing-custom-metrics) if you want to go under the hood of the Grafana dashboards.
+ * [Zipkin](https://github.com/knative/docs/blob/master/serving/accessing-traces.md) ...
+ * or maybe Istio's [Jaeger](https://istio.io/docs/tasks/telemetry/distributed-tracing/#generating-traces-using-the-bookinfo-sample)
