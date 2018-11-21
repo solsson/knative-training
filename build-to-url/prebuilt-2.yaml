@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: frontend-prebuilt
+  namespace: default
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            image: solsson/knative-training-frontend@sha256:ad19eac39c1667d0b6f6f063de1b8e96da7457ca2b9949dee7823b8fca49e517
+            env:
+            - name: DEPEND_ON_SERVICE
+              value: echo.default.svc.cluster.local

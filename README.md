@@ -80,3 +80,6 @@ we can interate on some code that depends on a service in the same namespace.
 
 Because I'm having problems with gcr.io at the moment which blocks local builds,
 the code is also built at https://hub.docker.com/r/solsson/knative-training-frontend.
+
+The difference between [revision 1](./build-to-url/prebuilt-1.yaml) and [revision 2](./build-to-url/prebuilt-2.yaml)
+is that the latter [forwards any x-request-id header](https://github.com/solsson/knative-training/commit/faea7c624172480565d4c6c701ea24106182380a#diff-0a98ad5a1f70616f39831e58d7fa7085).
