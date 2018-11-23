@@ -6,6 +6,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
+)
+
+var (
+	backendTimeout = time.Duration(5 * time.Second)
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +23,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	url := "http://" + dependOnService
 
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: backendTimeout,
+	}
 
 	get, err := http.NewRequest("GET", url, nil)
 	get.Header.Add("x-request-id", reqID)
@@ -38,7 +45,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		bodyString := string(bodyBytes)
 		fmt.Fprint(w, bodyString)
 	} else {
-		fmt.Fprintf(w, "Got status %q from backend", resp.StatusCode)
+		fmt.Fprintf(w, "Got status %d from backend\n", resp.StatusCode)
 	}
 }
 
