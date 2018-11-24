@@ -31,8 +31,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	get.Header.Add("x-request-id", reqID)
 	resp, err := client.Do(get)
 	if err != nil {
+		fmt.Fprintf(w, "GET failed for %q\n", url)
 		log.Printf("GET failed for %q\n", url)
-		panic(err)
 	}
 	defer resp.Body.Close()
 
