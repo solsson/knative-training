@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	backendTimeout = time.Duration(5 * time.Second)
+	backendTimeout  = time.Duration(5 * time.Second)
+	frontendHost, _ = os.Hostname()
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -29,6 +30,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	get, err := http.NewRequest("GET", url, nil)
 	get.Header.Add("x-request-id", reqID)
+	get.Header.Add("x-via-frontend-host", frontendHost)
 	resp, err := client.Do(get)
 	if err != nil {
 		fmt.Fprintf(w, "GET failed for %q\n", url)
