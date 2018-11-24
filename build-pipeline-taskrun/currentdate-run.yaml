@@ -1,0 +1,10 @@
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: currentdate
+  namespace: default
+spec:
+  taskRef:
+    name: currentdate
+  triggerRef:
+    type: manual
