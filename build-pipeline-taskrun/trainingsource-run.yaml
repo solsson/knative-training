@@ -1,0 +1,24 @@
+# See ../build-to-url
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: TaskRun
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: trainingsource
+spec:
+  taskRef:
+    name: kaniko
+  trigger:
+    triggerRef:
+      type: manual
+  inputs:
+    resources:
+    - name: workspace
+      resourceRef:
+        name: trainingsource-git
+    params:
+  outputs:
+    resources:
+    - name: builtImage
+      resourceRef:
+        name: trainingsource-image

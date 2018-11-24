@@ -1,0 +1,25 @@
+# See ../build-to-url
+---
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: trainingsource-git
+  namespace: default
+spec:
+  type: git
+  params:
+  - name: url
+    value: http://git.git.svc.cluster.local/ExampleSource/kanikobuild.git
+  - name: revision
+    value: HEAD
+---
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: trainingsource-image
+  namespace: default
+spec:        
+  type: image
+  params:
+  - name: url
+    value: knative.registry.svc.cluster.local/knative-training-buildpipeline/frontend:latest

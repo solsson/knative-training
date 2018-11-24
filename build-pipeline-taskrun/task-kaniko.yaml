@@ -1,0 +1,26 @@
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: Task
+metadata:
+  name: kaniko
+  namespace: default
+spec:
+  inputs:
+    resources:
+    - name: workspace
+      type: git
+    params:
+    - name: pathToDockerFile
+      description: The path to the dockerfile to build
+      default: /workspace/Dockerfile
+  outputs:
+    resources:
+    - name: builtImage
+      type: image
+  steps:
+  - name: build-and-push
+    image: gcr.io/kaniko-project/executor@sha256:cc999f884178881e638fc943fa76e71a958dcdab1b516281ae0bb749ae2c3a54
+    command:
+    - /kaniko/executor
+    args:
+    - --dockerfile=${inputs.params.pathToDockerFile}
+    - --destination=${outputs.resources.builtImage.url}
