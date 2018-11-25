@@ -13,6 +13,8 @@ spec:
     value: HEAD
   - name: directory
     value: ./example-module
+  - name: functionName
+    value: ""
 ---
 apiVersion: pipeline.knative.dev/v1alpha1
 kind: PipelineResource

@@ -15,7 +15,6 @@ spec:
     - name: workspace
       resourceRef:
         name: nodejs-riff-module-git
-    params:
   outputs:
     resources:
     - name: builtImage
