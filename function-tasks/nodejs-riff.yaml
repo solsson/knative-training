@@ -1,0 +1,55 @@
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: Task
+metadata:
+  name: nodejs-riff-function-build
+  namespace: default
+spec:
+  inputs:
+    resources:
+    - name: workspace
+      type: git
+    params:
+    - name: directory
+      description: The subdirectory of the workspace/repo
+      default: .
+    - name: functionName
+      description: The name of the exported function to put in the runtime (empty to use package.json)
+      default: ""
+  outputs:
+    resources:
+    - name: builtImage
+      type: image
+  steps:
+  - name: dockerfile
+    image: gcr.io/kaniko-project/executor:debug@sha256:b299f33d6bb3207aafe7878801fa9c2cfe60b13700dac8d392eee21445c22891
+    command:
+    - /busybox/sh
+    args:
+    - -c
+    - |
+      cd /workspace/${inputs.params.directory}
+      echo "FROM projectriff/node-function-invoker@sha256:ae7f87c524bb46dbfd7acc986b827f74d93d1301ea137f52734c7607295a919c" > Dockerfile
+      if [ -z "${inputs.params.functionName}" ]; then
+      cat <<EOF >> Dockerfile
+      ENV FUNCTION_URI=/functions/
+      COPY package-lock.json \${FUNCTION_URI}package-lock.json
+      COPY package.json \${FUNCTION_URI}package.json
+      RUN (cd \${FUNCTION_URI} && npm ci)
+      COPY . \${FUNCTION_URI}
+      EOF
+      else
+      cat <<EOF >> Dockerfile
+      ENV FUNCTION_URI=/functions/${inputs.params.functionName}
+      COPY ${inputs.params.functionName} \${FUNCTION_URI}
+      EOF
+      fi
+      pwd
+      ls -l
+      cat Dockerfile
+  - name: build-and-push
+    image: gcr.io/kaniko-project/executor@sha256:cc999f884178881e638fc943fa76e71a958dcdab1b516281ae0bb749ae2c3a54
+    command:
+    - /kaniko/executor
+    args:
+    - --dockerfile=${inputs.params.directory}
+    - --destination=${outputs.resources.builtImage.url}
