@@ -10,4 +10,4 @@ spec:
       revisionTemplate:
         spec:
           container:
-            image: knative.registry.svc.cluster.local/knative-training/nodejs-riff-module@sha256:92750e6d4f8c9c6930fd2e3b71239509b6762ed368434bd632d7b10ed2ba0d80
+            image: knative.registry.svc.cluster.local/knative-training/nodejs-riff-module@sha256:564e83b998ebf031c857c62f869f28152924b3d2a78b4955e5504dafb219c262

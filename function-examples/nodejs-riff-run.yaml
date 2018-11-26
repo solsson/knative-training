@@ -20,11 +20,10 @@ spec:
       value: ./example-module
     - name: functionName
       value: ""
+    - name: reproducible
+      value: "true"
   outputs:
     resources:
     - name: builtImage
       resourceRef:
         name: nodejs-riff-module-image
-    params:
-    - name: reproducible
-      value: "true"
