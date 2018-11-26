@@ -1,6 +1,8 @@
 
 # Knativde Training Resources
 
+_If you're looking for runtime Task examples, see [./function-tasks](./function-tasks/)._
+
 This guide is brief on howto stuff.
 It refers to official docs instead.
 The choice of test case detauls - images, commands etc -
