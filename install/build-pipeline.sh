@@ -17,4 +17,4 @@ kubectl apply -f knative-releases/serving/previous/v0.2.2/monitoring-metrics-pro
 kubectl apply -f knative-releases/serving/previous/v0.2.2/monitoring-tracing-zipkin-in-mem.yaml
 read -p "Press enter to continue"
 
-kubectl apply -f $GOPATH/src/github.com/knative/build-pipeline
+kubectl apply -f $GOPATH/src/github.com/knative/build-pipeline/third_party/config/build/release.yaml
