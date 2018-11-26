@@ -25,3 +25,6 @@ spec:
     - name: builtImage
       resourceRef:
         name: nodejs-riff-module-image
+    params:
+    - name: reproducible
+      value: "true"

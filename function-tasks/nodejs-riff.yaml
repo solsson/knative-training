@@ -19,6 +19,10 @@ spec:
     resources:
     - name: builtImage
       type: image
+    params:
+    - name: reproducible
+      description: true to enable Kaniko's --reproducible flag
+      default: "false"
   steps:
   - name: dockerfile
     image: gcr.io/kaniko-project/executor:debug@sha256:b299f33d6bb3207aafe7878801fa9c2cfe60b13700dac8d392eee21445c22891
@@ -54,4 +58,4 @@ spec:
     - --dockerfile=/workspace/${inputs.params.directory}/Dockerfile
     - --context=/workspace/${inputs.params.directory}
     - --destination=${outputs.resources.builtImage.url}
-    - --reproducible
+    - --reproducible=${outputs.params.reproducible}
