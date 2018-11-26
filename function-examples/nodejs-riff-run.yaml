@@ -15,6 +15,11 @@ spec:
     - name: workspace
       resourceRef:
         name: nodejs-riff-module-git
+    params:
+    - name: directory
+      value: ./example-module
+    - name: functionName
+      value: ""
   outputs:
     resources:
     - name: builtImage
