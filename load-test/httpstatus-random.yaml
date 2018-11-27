@@ -1,0 +1,11 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: httpstatus-random
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            image: solsson/httpstatus-random@sha256:ecd37b6619e156f3e7aa1c6640efad707e68553847b42d7dbe71a87f0ef14e12
