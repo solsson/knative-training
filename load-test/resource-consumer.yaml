@@ -1,0 +1,13 @@
+# https://github.com/kubernetes/kubernetes/blob/v1.12.3/test/images/resource-consumer/README.md
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: resource-consumer
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            # gcr.io/kubernetes-e2e-test-images/resource-consumer:1.4
+            image: gcr.io/kubernetes-e2e-test-images/resource-consumer@sha256:810ecc673318e18c4ef0ebab43a1145476e6ae580cb7e96c01cf5413038bde79
