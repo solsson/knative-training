@@ -1,0 +1,11 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Revision
+metadata:
+  annotations:
+    autoscaling.knative.dev/minScale: "2"
+    autoscaling.knative.dev/maxScale: "10"
+  name: scaling-annotations-00001
+spec:
+  container:
+    image: gcr.io/kubernetes-e2e-test-images/resource-consumer@sha256:810ecc673318e18c4ef0ebab43a1145476e6ae580cb7e96c01cf5413038bde79
+ 
