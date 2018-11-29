@@ -70,6 +70,13 @@ spec:
   #    path: /tmp/devpod1-workspace
     # executables would get permission denied with hostPath on GKE
     emptyDir: {}
+  # To reserve resources, or use node-local storage (edit with your choice of labels)
   nodeSelector:
     cloud.google.com/gke-nodepool: persist1
     failure-domain.beta.kubernetes.io/zone: europe-north1-c
+  # kubectl taint node -l cloud.google.com/gke-nodepool=persist1,failure-domain.beta.kubernetes.io/zone=europe-north1-c dedicated=dev:NoSchedule
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "dev"
+    effect: "NoSchedule"
