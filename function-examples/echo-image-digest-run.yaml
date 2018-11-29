@@ -16,19 +16,12 @@ spec:
     - name: workspace
       resourceRef:
         name: nodejs-riff-module-git
-      params:
-      - name: directory
-        value: ./example-module
-      - name: functionName
-        value: ""
-      - name: reproducible
-        value: "true"
     outputs:
     - name: builtImage
       resourceRef:
         name: nodejs-riff-module-image
   - name: echo
     inputs:
-    - name: image
+    - name: builtImage
       resourceRef:
         name: nodejs-riff-module-image

@@ -8,6 +8,13 @@ spec:
   - name: build-and-push
     taskRef:
       name: nodejs-riff-function-build
+    params:
+    - name: directory
+      value: ./example-module
+    - name: functionName
+      value: ""
+    - name: reproducible
+      value: "true"
   - name: echo
     taskRef:
       name: echo-image-digest
