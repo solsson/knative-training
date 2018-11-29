@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   # kubectl create serviceaccount devpod --namespace=default
-  # kubectl create rolebinding devpod --clusterrole=cluster-admin --serviceaccount=default:devpod --namespace=default
+  # kubectl create clusterrolebinding devpod --clusterrole=cluster-admin --serviceaccount=default:devpod --namespace=default
   serviceAccount: devpod
   terminationGracePeriodSeconds: 3
   containers:
