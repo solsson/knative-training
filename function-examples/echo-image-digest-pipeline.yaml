@@ -1,0 +1,13 @@
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: echo-image-digest
+  namespace: default
+spec:
+  tasks:
+  - name: build-and-push
+    taskRef:
+      name: nodejs-riff-function-build
+  - name: echo
+    taskRef:
+      name: echo-image-digest

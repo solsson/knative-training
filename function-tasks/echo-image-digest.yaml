@@ -1,0 +1,20 @@
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: Task
+metadata:
+  name: echo-image-digest
+  namespace: default
+spec:
+  inputs:
+    resources:
+    - name: builtImage
+      type: image
+  steps:
+  - name: echo
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - /busybox/sh
+    args:
+    - -c
+    - |
+      echo ${inputs.resources.builtImage.url}
+      echo ${inputs.resources.builtImage.digest}

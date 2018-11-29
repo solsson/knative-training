@@ -1,0 +1,34 @@
+apiVersion: pipeline.knative.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: echo-image-digest-001
+  namespace: default
+spec:
+  pipelineRef:
+    name: echo-image-digest
+  pipelineParamsRef:
+    name: echo-image-digest
+  triggerRef:
+    type: manual
+  resources:
+  - name: build-and-push
+    inputs:
+    - name: workspace
+      resourceRef:
+        name: nodejs-riff-module-git
+      params:
+      - name: directory
+        value: ./example-module
+      - name: functionName
+        value: ""
+      - name: reproducible
+        value: "true"
+    outputs:
+    - name: builtImage
+      resourceRef:
+        name: nodejs-riff-module-image
+  - name: echo
+    inputs:
+    - name: image
+      resourceRef:
+        name: nodejs-riff-module-image
