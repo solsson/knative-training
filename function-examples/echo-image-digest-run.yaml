@@ -22,6 +22,10 @@ spec:
         name: nodejs-riff-module-image
   - name: echo
     inputs:
+    - name: workspace
+      resourceRef:
+        name: nodejs-riff-module-git
+    inputs:
     - name: builtImage
       resourceRef:
         name: nodejs-riff-module-image

@@ -18,6 +18,9 @@ spec:
     - name: reproducible
       description: true to enable Kaniko's --reproducible flag
       default: "false"
+    - name: kanikoLog
+      description: Where to direct Kaniko's stdout (a workaround until PipelineParams and log collection is implemented)
+      default: "kanikolog.txt"
   outputs:
     resources:
     - name: builtImage
@@ -61,5 +64,4 @@ spec:
       --context=/workspace/${inputs.params.directory}
       --destination=${outputs.resources.builtImage.url}
       --reproducible=${inputs.params.reproducible}
-      | tee -a /workspace/${outputs.resources.builtImage.kanikoLog}
-    # The log file is a temporary solution until PipelineParams and log collection is implemented
+      --justtesting${inputs.params.kanikoLog}

@@ -15,6 +15,8 @@ spec:
       value: ""
     - name: reproducible
       value: "true"
+    - name: kanikoLog
+      value: nodejs-riff-module.kanikolog.txt
   - name: echo
     taskRef:
       name: echo-image-digest

@@ -22,6 +22,8 @@ spec:
       value: ""
     - name: reproducible
       value: "true"
+    - name: kanikoLog
+      value: nodejs-riff-module.kanikolog.txt
   outputs:
     resources:
     - name: builtImage

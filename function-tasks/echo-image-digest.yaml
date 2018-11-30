@@ -8,6 +8,13 @@ spec:
     resources:
     - name: builtImage
       type: image
+    # The workspace is needed for kanikLog
+    - name: workspace
+      type: git
+    params:
+    - name: kanikoLog
+      description: Where to direct Kaniko's stdout (a workaround until PipelineParams and log collection is implemented)
+      defalt: "kanikolog.txt"
   steps:
   - name: echo
     image: gcr.io/kaniko-project/executor:debug
@@ -17,6 +24,4 @@ spec:
     - -c
     - |
       echo ${inputs.resources.builtImage.url}
-      echo ${inputs.resources.builtImage.kanikoLog}
-      cat ${inputs.resources.builtImage.kanikoLog}
-      # https://github.com/knative/build-pipeline/blob/2b52b047941f4a69fe81f2bcbcdee2fe12466674/test/kaniko_task_test.go#L257
+      echo ${inputs.params.kanikoLog}
