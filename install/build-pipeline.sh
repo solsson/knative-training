@@ -1,7 +1,9 @@
 #!/bin/sh
 #set -e
 
+echo "KUBECONFIG=$KUBECONFIG"
 kubectl cluster-info
+kubectl config current-context
 [ -z "$(kubectl -n registry get endpoints knative -o jsonpath='{ .subsets[*].addresses[*].ip }')" ] && \
   echo "This installer assumes that https://github.com/triggermesh/knative-local-registry is installed" && \
   exit 1
