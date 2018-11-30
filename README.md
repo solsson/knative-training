@@ -30,7 +30,7 @@ The details depend on how you host your test cluster.
 # Minikube
 alias kcurl="curl --connect-to :80:$(minikube ip):32380"
 # A public LoadBalancer
-alias kcurl="curl --connect-to :80:$(kubectl -n istio-system get service knative-ingressgateway -o jsonpath='{ .status.loadBalancer.ingres[*].ip }'):80"
+alias kcurl="curl --connect-to :80:$(kubectl -n istio-system get service knative-ingressgateway -o jsonpath='{ .status.loadBalancer.ingress[*].ip }'):80"
 ```
 
 With this alias and nothing deployed we expect a 404 using any hostname, `kcurl -vf nonexistent.example.com`,
