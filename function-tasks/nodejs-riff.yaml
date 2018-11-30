@@ -59,8 +59,6 @@ spec:
     args:
     - -c
     - >
-      pwd;
-      ls -lR;
       /kaniko/executor
       --dockerfile=/workspace/${inputs.params.directory}/Dockerfile
       --context=/workspace/${inputs.params.directory}

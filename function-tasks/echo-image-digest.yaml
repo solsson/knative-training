@@ -15,7 +15,7 @@ spec:
     params:
     - name: kanikoLog
       description: Where to direct Kaniko's stdout (a workaround until PipelineParams and log collection is implemented)
-      defalt: "kanikolog.txt"
+      default: "kanikolog.txt"
   steps:
   - name: echo
     image: gcr.io/kaniko-project/executor:debug
@@ -24,10 +24,12 @@ spec:
     args:
     - -c
     - |
-      pwd;
-      ls -lR;
       echo ${inputs.resources.builtImage.url}
       echo ${inputs.resources.builtImage.digest}
       echo ${inputs.params.kanikoLog}
       stat ${inputs.params.kanikoLog}
-      tail -n 1 ${inputs.params.kanikoLog}
+      tail -n 3 ${inputs.params.kanikoLog}
+      PUSHED=$(tail -n 1 ${inputs.params.kanikoLog})
+      DIGEST=$(expr "$PUSHED" : '.*digest: \(sha256:[a-f0-9]*\).*')
+      [ -z "$DIGEST" ] && echo "Failed to find digest in Kaniko output" && exit 1
+      echo "Digest: $DIGEST"

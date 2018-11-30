@@ -16,7 +16,7 @@ spec:
     - name: reproducible
       value: "true"
     - name: kanikoLog
-      value: nodejs-riff-module.kanikolog.txt
+      value: echo-image-digest.kanikolog.txt
   - name: echo
     taskRef:
       name: echo-image-digest
@@ -28,4 +28,4 @@ spec:
         providedBy: [build-and-push]
     params:
     - name: kanikoLog
-      value: nodejs-riff-module.kanikolog.txt
+      value: echo-image-digest.kanikolog.txt
