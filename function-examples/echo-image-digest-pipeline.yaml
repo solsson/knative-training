@@ -20,3 +20,12 @@ spec:
   - name: echo
     taskRef:
       name: echo-image-digest
+    resources:
+      - name: workspace
+        providedBy: [build-and-push]
+      - name: builtImage
+        # but we're not getting a Digest https://github.com/knative/build-pipeline/blob/476262127199e67701d59418b2631467564dcdf5/pkg/apis/pipeline/v1alpha1/image_resource.go#L51
+        providedBy: [build-and-push]
+    params:
+    - name: kanikoLog
+      value: nodejs-riff-module.kanikolog.txt

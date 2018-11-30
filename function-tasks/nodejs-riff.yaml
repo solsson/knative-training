@@ -59,9 +59,11 @@ spec:
     args:
     - -c
     - >
+      pwd;
+      ls -lR;
       /kaniko/executor
       --dockerfile=/workspace/${inputs.params.directory}/Dockerfile
       --context=/workspace/${inputs.params.directory}
       --destination=${outputs.resources.builtImage.url}
       --reproducible=${inputs.params.reproducible}
-      --justtesting${inputs.params.kanikoLog}
+      2>&1 | tee -a ${inputs.params.kanikoLog}

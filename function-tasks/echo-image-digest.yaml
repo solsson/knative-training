@@ -8,7 +8,8 @@ spec:
     resources:
     - name: builtImage
       type: image
-    # The workspace is needed for kanikLog
+    # The workspace must be an output from a step that writes kanikoLog,
+    # i.e. the pipeline must have providedBy for this input
     - name: workspace
       type: git
     params:
@@ -23,5 +24,10 @@ spec:
     args:
     - -c
     - |
+      pwd;
+      ls -lR;
       echo ${inputs.resources.builtImage.url}
+      echo ${inputs.resources.builtImage.digest}
       echo ${inputs.params.kanikoLog}
+      stat ${inputs.params.kanikoLog}
+      tail -n 1 ${inputs.params.kanikoLog}

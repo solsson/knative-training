@@ -17,6 +17,9 @@ spec:
       resourceRef:
         name: nodejs-riff-module-git
     outputs:
+    - name: workspace
+      resourceRef:
+        name: nodejs-riff-module-git
     - name: builtImage
       resourceRef:
         name: nodejs-riff-module-image
@@ -25,7 +28,6 @@ spec:
     - name: workspace
       resourceRef:
         name: nodejs-riff-module-git
-    inputs:
     - name: builtImage
       resourceRef:
         name: nodejs-riff-module-image
