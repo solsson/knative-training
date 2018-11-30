@@ -50,13 +50,13 @@ spec:
       ls -l
       cat Dockerfile
   - name: build-and-push
-    image: gcr.io/kaniko-project/executor@sha256:cc999f884178881e638fc943fa76e71a958dcdab1b516281ae0bb749ae2c3a54
+    image: gcr.io/kaniko-project/executor:debug@sha256:b299f33d6bb3207aafe7878801fa9c2cfe60b13700dac8d392eee21445c22891
     command:
     - /busybox/sh
     args:
     - -c
     - >
-    - /kaniko/executor
+      /kaniko/executor
       --dockerfile=/workspace/${inputs.params.directory}/Dockerfile
       --context=/workspace/${inputs.params.directory}
       --destination=${outputs.resources.builtImage.url}
