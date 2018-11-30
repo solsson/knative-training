@@ -25,6 +25,9 @@ kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/istio.yaml
 while [ $(kubectl get crd gateways.networking.istio.io -o jsonpath='{.status.conditions[?(@.type=="Established")].status}') != 'True' ]; do
   echo "Waiting on Istio CRDs"; sleep 1
 done
+while [ -z "$(kubectl -n istio-system get endpoints istio-sidecar-injector -o jsonpath='{ .subsets[*].addresses[*].ip }')" ]; do
+  echo "Waiting for istio-sidecar-injector to be ready"
+done
 
 kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/serving.yaml
 
