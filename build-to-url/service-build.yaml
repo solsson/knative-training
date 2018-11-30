@@ -12,7 +12,7 @@ spec:
         spec:
           source:
             git:
-              url: http://git.git.svc.cluster.local/ExampleSource/kanikobuild.git
+              url: http://knative.git.svc.cluster.local/ExampleSource/kanikobuild.git
               revision: master
           template:
             name: kaniko

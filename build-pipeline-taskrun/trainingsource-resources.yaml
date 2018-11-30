@@ -9,7 +9,7 @@ spec:
   type: git
   params:
   - name: url
-    value: http://git.git.svc.cluster.local/ExampleSource/kanikobuild.git
+    value: http://knative.git.svc.cluster.local/ExampleSource/kanikobuild.git
   - name: revision
     value: HEAD
 ---

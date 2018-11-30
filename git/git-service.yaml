@@ -2,15 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: git
+  name: knative
   namespace: git
 spec:
-  type: NodePort
   ports:
   - port: 80
     targetPort: 3000
     name: web
-    #nodePort: 30300
-    nodePort: 80
   selector:
     app: gogs
