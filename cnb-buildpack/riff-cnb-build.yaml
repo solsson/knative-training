@@ -1,0 +1,26 @@
+# kubectl apply -f https://github.com/projectriff/riff-buildpack-group/raw/master/riff-cnb-buildtemplate.yaml
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: riff-cnb-myfunction
+  namespace: default
+spec:
+  runLatest:
+    configuration:
+      build:
+        apiVersion: build.knative.dev/v1alpha1
+        kind: Build
+        spec:
+          source:
+            git:
+              url: http://knative.git.svc.cluster.local/ExampleSource/myfunction.git
+              revision: master
+          template:
+            name: riff-cnb
+            arguments:
+            - name: IMAGE
+              value: knative.registry.svc.cluster.local/knative-training/myfunction:latest
+      revisionTemplate:
+        spec:
+          container:
+            image: knative.registry.svc.cluster.local/knative-training/myfunction:latest
