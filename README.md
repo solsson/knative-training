@@ -88,3 +88,25 @@ the code is also built at https://hub.docker.com/r/solsson/knative-training-fron
 
 The difference between [revision 1](./build-to-url/prebuilt-1.yaml) and [revision 2](./build-to-url/prebuilt-2.yaml)
 is that the latter [forwards any x-request-id header](https://github.com/solsson/knative-training/commit/faea7c624172480565d4c6c701ea24106182380a#diff-0a98ad5a1f70616f39831e58d7fa7085).
+
+# Build Pipeline
+
+Reusable `Task`s  are in [./function-tasks](./function-tasks/).
+They should be quite generic building blocks.
+
+Sample runs are in [./function-examples](./function-examples).
+
+```
+kubectl apply -f function-tasks/
+kubectl apply -f function-examples/nodejs-riff-resources.yaml
+kubectl apply -f function-examples/echo-image-digest-params.yaml
+kubectl apply -f function-examples/echo-image-digest-pipeline.yaml
+kubectl apply -f function-examples/echo-image-digest-run.yaml
+```
+
+Unlike Knative Serving+Build these examples do not produce `Service`s. All you can do is check for log output:
+
+```
+kubectl logs -l build.knative.dev/buildName=echo-image-digest-001-build-and-push -c build-step-build-and-push
+kubectl logs -l build.knative.dev/buildName=echo-image-digest-001-echo -c build-step-echo
+```
