@@ -1,13 +1,15 @@
 #!/bin/sh
 #set -e
 
-echo "KUBECONFIG=$KUBECONFIG"
-kubectl cluster-info
-kubectl config current-context
-[ -z "$(kubectl -n registry get endpoints knative -o jsonpath='{ .subsets[*].addresses[*].ip }')" ] && \
-  echo "This installer assumes that https://github.com/triggermesh/knative-local-registry is installed" && \
-  exit 1
-read -p "Press enter to continue"
+[ "$1" != "--auto-accept=true" ] && {
+  echo "KUBECONFIG=$KUBECONFIG"
+  kubectl config current-context
+  kubectl cluster-info
+  [ -z "$(kubectl -n registry get endpoints knative -o jsonpath='{ .subsets[*].addresses[*].ip }')" ] && \
+    echo "This installer assumes that https://github.com/triggermesh/knative-local-registry is installed" && \
+    exit 1
+  read -p "Press enter to install Knative in this cluster"
+}
 
 kubectl label namespace default istio-injection=enabled
 
