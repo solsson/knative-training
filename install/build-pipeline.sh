@@ -15,14 +15,14 @@ kubectl label namespace default istio-injection=enabled
   KNATIVE_RELEASES=https://storage.googleapis.com/knative-releases
 }
 
-kubectl create -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/istio-crds.yaml
-kubectl create -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/istio.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/istio-crds.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/istio.yaml
 
 while [ $(kubectl get crd gateways.networking.istio.io -o jsonpath='{.status.conditions[?(@.type=="Established")].status}') != 'True' ]; do
   echo "Waiting on Istio CRDs"; sleep 1
 done
 
-kubectl create -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/serving.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/serving.yaml
 
 kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/monitoring-metrics-prometheus.yaml
 kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/monitoring-tracing-zipkin-in-mem.yaml
