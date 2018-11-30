@@ -3,12 +3,13 @@
 
 _If you're looking for runtime Task examples, see [./function-tasks](./function-tasks/)._
 
-This guide is brief on howto stuff.
-It refers to official docs instead.
-The choice of test case detauls - images, commands etc -
+This guide is meant to be brief on howto stuff, with references to official docs instead.
+The choice of test case details - images, commands etc -
 differs from these official docs to try to offer insights by slight variation.
 
 ## Local Git
+
+Apply [./git](./git/).
 
 To use Gogs locally run `kubectl -n git port-forward gogs-0 3000`.
 Log in as user knative passwod knative at http://localhost:3000/,
@@ -26,8 +27,10 @@ Throughout this guide we'll use the alias `kcurl` to refer to HTTP connections t
 The details depend on how you host your test cluster.
 
 ```
-# minikube
+# Minikube
 alias kcurl="curl --connect-to :80:$(minikube ip):32380"
+# A public LoadBalancer
+alias kcurl="curl --connect-to :80:$(kubectl -n istio-system get service knative-ingressgateway -o jsonpath='{ .status.loadBalancer.ingres[*].ip }'):80"
 ```
 
 With this alias and nothing deployed we expect a 404 using any hostname, `kcurl -vf nonexistent.example.com`,
