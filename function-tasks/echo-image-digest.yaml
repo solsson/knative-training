@@ -17,4 +17,6 @@ spec:
     - -c
     - |
       echo ${inputs.resources.builtImage.url}
-      echo ${inputs.resources.builtImage.digest}
+      echo ${inputs.resources.builtImage.kanikoLog}
+      cat ${inputs.resources.builtImage.kanikoLog}
+      # https://github.com/knative/build-pipeline/blob/2b52b047941f4a69fe81f2bcbcdee2fe12466674/test/kaniko_task_test.go#L257

@@ -52,9 +52,14 @@ spec:
   - name: build-and-push
     image: gcr.io/kaniko-project/executor@sha256:cc999f884178881e638fc943fa76e71a958dcdab1b516281ae0bb749ae2c3a54
     command:
-    - /kaniko/executor
+    - /busybox/sh
     args:
-    - --dockerfile=/workspace/${inputs.params.directory}/Dockerfile
-    - --context=/workspace/${inputs.params.directory}
-    - --destination=${outputs.resources.builtImage.url}
-    - --reproducible=${inputs.params.reproducible}
+    - -c
+    - >
+    - /kaniko/executor
+      --dockerfile=/workspace/${inputs.params.directory}/Dockerfile
+      --context=/workspace/${inputs.params.directory}
+      --destination=${outputs.resources.builtImage.url}
+      --reproducible=${inputs.params.reproducible}
+      | tee -a /workspace/${outputs.resources.builtImage.kanikoLog}
+    # The log file is a temporary solution until PipelineParams and log collection is implemented

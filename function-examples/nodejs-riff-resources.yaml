@@ -22,3 +22,5 @@ spec:
   params:
   - name: url
     value: knative.registry.svc.cluster.local/knative-training/nodejs-riff-module:latest
+  - name: workspaceKanikoLogPath
+    value: nodejs-riff-module.kanikolog.txt
