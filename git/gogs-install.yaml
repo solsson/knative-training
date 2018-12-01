@@ -37,5 +37,19 @@ spec:
           -d '{"name":"kanikobuild","description":"","private":false}' \
           -v;
 
+          curl -f -u knative:knative \
+          http://knative.git.svc.cluster.local/api/v1/admin/users/ExampleSource/repos \
+          --retry 3 \
+          -H 'Content-Type:application/json' \
+          -d '{"name":"buildpack-nodejs","description":"","private":false}' \
+          -v;
+
+          curl -f -u knative:knative \
+          http://knative.git.svc.cluster.local/api/v1/admin/users/ExampleSource/repos \
+          --retry 3 \
+          -H 'Content-Type:application/json' \
+          -d '{"name":"buildpack-java","description":"","private":false}' \
+          -v;
+
       restartPolicy: Never
   backoffLimit: 4
