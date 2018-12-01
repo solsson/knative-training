@@ -20,9 +20,6 @@ spec:
             arguments:
             - name: IMAGE
               value: knative.registry.svc.cluster.local/knative-training/myfunction:latest
-              # detection seems really buggy, we get "Cloud Foundry OpenJDK Buildpack: pass" without pom.xml or build.gradle
-            - name: FUNCTION_LANGUAGE
-              value: node
       revisionTemplate:
         spec:
           container:
