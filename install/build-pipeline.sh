@@ -36,12 +36,13 @@ kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/monitoring-tracing-
 kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/monitoring-logs-elasticsearch.yaml
 
 # https://github.com/solsson/go-ko-runner
-korunner=solsson/go-ko-runner@sha256:3967f69d7bf0c512c3bad65538bf66b661ceab9a5d37c1b1f2dd8cafe944142a
+korunner=solsson/go-ko-runner@sha256:a1c2b790e59c7c482879181339fef03ca3486cf133691642b5feff482155f9e0
 kubectl create serviceaccount ko-runner --namespace=default
 kubectl create clusterrolebinding ko-runner --clusterrole=cluster-admin --serviceaccount=default:ko-runner --namespace=default
 kubectl run install-knative-build-pipeline --serviceaccount=ko-runner \
   --restart=Never --image=$korunner \
-  --env="KO_SOURCE=github.com/knative/build-pipeline" --env="KO_REVISION=master" \
+  --env="KO_SOURCE=github.com/knative/build-pipeline" \
+  --env="KO_REVISION=c8866cb41744b0e34bf1fdcaff565106db6c0a4c" \
   --env="INSTALL_THIRD_PARTY=_" \
   --env="EXIT_DELAY=3600"
 
