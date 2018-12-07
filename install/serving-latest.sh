@@ -32,7 +32,7 @@ while [ -z "$(kubectl -n istio-system get endpoints istio-sidecar-injector -o js
 done
 
 # https://github.com/solsson/go-ko-runner
-korunner=solsson/go-ko-runner@sha256:a1c2b790e59c7c482879181339fef03ca3486cf133691642b5feff482155f9e0
+korunner=solsson/go-ko-runner@sha256:a36ffaec1634a578c70b11277fc4f36df9e30c74b3ec1c5fa7412b4100bb9c54
 echo "korunner=$korunner"
 kubectl create serviceaccount ko-runner --namespace=default
 kubectl create clusterrolebinding ko-runner --clusterrole=cluster-admin --serviceaccount=default:ko-runner --namespace=default
