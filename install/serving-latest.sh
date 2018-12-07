@@ -19,7 +19,7 @@ kubectl label namespace default istio-injection=enabled
   KNATIVE_RELEASES=https://storage.googleapis.com/knative-releases
 }
 
-SERVING_GIT=9dd4beb2f4b03a8aea12a9ae7c26326b5dab5981
+SERVING_GIT=c898651f64c7ceea3984afb4f30defe0e6b9b6a9
 
 kubectl apply -f https://github.com/knative/serving/raw/${SERVING_GIT}/third_party/istio-1.0.4/istio-crds.yaml
 kubectl apply -f https://github.com/knative/serving/raw/${SERVING_GIT}/third_party/istio-1.0.4/istio.yaml
@@ -47,10 +47,25 @@ kubectl run install-knative-serving --serviceaccount=ko-runner \
 kubectl run install-knative-build-pipeline --serviceaccount=ko-runner \
   --restart=Never --image=$korunner \
   --env="KO_SOURCE=github.com/knative/build-pipeline" \
-  --env="KO_REVISION=f70944ea6b59295e80de9e531df5a292ceb48d43" \
+  --env="KO_REVISION=7b18fba4ee9f207e8080eeb9c3bb849b19bfc590" \
   --env="INSTALL_THIRD_PARTY=_" \
   --env="EXIT_DELAY=3600"
 
 # TODO can we do a wait like the above and after that delete the service account?
 
 # TODO https://github.com/knative/serving/blob/master/DEVELOPMENT.md#install-logging-and-monitoring-backends
+
+kubectl run install-knative-serving --serviceaccount=ko-runner \
+  --restart=Never --image=$korunner \
+  --env="KO_SOURCE=github.com/knative/serving" \
+  --env="KO_REVISION=$SERVING_GIT" \
+  --env="EXIT_DELAY=1"
+
+kubectl create namespace knative-monitoring
+
+kubectl run install-knative-serving --serviceaccount=ko-runner \
+  --restart=Never --image=$korunner \
+  --env="KO_SOURCE=github.com/knative/serving" \
+  --env="KO_REVISION=$SERVING_GIT" \
+  --env="KO_APPLY_PATH=config/monitoring/metrics/prometheus/" \
+  --env="EXIT_DELAY=1"
