@@ -45,7 +45,16 @@ spec:
       imagePullPolicy: Always
     - name: write-riff-toml
       image: projectriff/builder@sha256:f822af38fc1df43d7178f054cf7ead27c33529cb8e28ea6c61c58c55864b0d8d
-      command: ["/bin/bash", "-c", "printf \"artifact = '${FUNCTION_ARTIFACT}'\\nhandler = '${FUNCTION_HANDLER}'\\noverride = '${FUNCTION_LANGUAGE}'\\n\" > app/riff.toml"]
+      #command: ["/bin/bash", "-c", "printf \"artifact = '${FUNCTION_ARTIFACT}'\\nhandler = '${FUNCTION_HANDLER}'\\noverride = '${FUNCTION_LANGUAGE}'\\n\" > app/riff.toml"]
+      command:
+      - /bin/bash
+      - -c
+      - >
+        printf \"artifact = '${FUNCTION_ARTIFACT}'\\nhandler = '${FUNCTION_HANDLER}'\\noverride = '${FUNCTION_LANGUAGE}'\\n\" > app/riff.toml
+        && tail -f /dev/null
+      volumeMounts:
+        - name: app-cache
+          mountPath: /cache
       imagePullPolicy: Always
     - name: detect
       image: projectriff/builder@sha256:f822af38fc1df43d7178f054cf7ead27c33529cb8e28ea6c61c58c55864b0d8d
