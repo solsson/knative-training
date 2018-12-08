@@ -44,11 +44,11 @@ spec:
           mountPath: /cache
       imagePullPolicy: Always
     - name: write-riff-toml
-      image: projectriff/builder:latest
+      image: projectriff/builder@sha256:f822af38fc1df43d7178f054cf7ead27c33529cb8e28ea6c61c58c55864b0d8d
       command: ["/bin/bash", "-c", "printf \"artifact = '${FUNCTION_ARTIFACT}'\\nhandler = '${FUNCTION_HANDLER}'\\noverride = '${FUNCTION_LANGUAGE}'\\n\" > app/riff.toml"]
       imagePullPolicy: Always
     - name: detect
-      image: projectriff/builder:latest
+      image: projectriff/builder@sha256:f822af38fc1df43d7178f054cf7ead27c33529cb8e28ea6c61c58c55864b0d8d
       command: ["/lifecycle/detector"]
       imagePullPolicy: Always
     - name: analyze
@@ -60,7 +60,7 @@ spec:
           value: ${USE_CRED_HELPERS}
       imagePullPolicy: Always
     - name: build
-      image: projectriff/builder:latest
+      image: projectriff/builder@sha256:f822af38fc1df43d7178f054cf7ead27c33529cb8e28ea6c61c58c55864b0d8d
       command: ["/lifecycle/builder"]
       volumeMounts:
         - name: app-cache
