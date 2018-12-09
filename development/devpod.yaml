@@ -9,6 +9,7 @@ spec:
   serviceAccount: devpod
   terminationGracePeriodSeconds: 3
   containers:
+  #### ko
   - name: ko
     image: debian:buster
     workingDir: /workspace
@@ -38,6 +39,7 @@ spec:
     volumeMounts:
     - name: workspace
       mountPath: workspace
+  #### kafkacat
   - name: kafkacat
     image: solsson/kafkacat@sha256:7a5961f861ddad53c25227511b9f36a5c13bc43296470b383be2f3e8e3a506f4
     workingDir: /workspace
@@ -53,6 +55,7 @@ spec:
     volumeMounts:
     - name: workspace
       mountPath: workspace
+  #### docker with node's docker.sock mounted
   - name: docker
     securityContext:
       privileged: true
