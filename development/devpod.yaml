@@ -27,9 +27,7 @@ spec:
       mkdir -p ${GOPATH}/src/github.com/knative;
       mkdir /root/.docker && echo '{}' > /root/.docker/config.json;
       echo "You can now: kubectl exec -ti devpod -c ko bash";
-      tail -f /dev/null
-      # Other candidates for setup
-      # [ -d ${GOPATH}/src/github.com/knative/build-pipeline ] || git clone https://github.com/knative/build-pipeline ${GOPATH}/src/github.com/knative/build-pipeline;
+      sleep infinity
     env:
       # https://github.com/knative/serving/blob/master/DEVELOPMENT.md#setup-your-environment-
     - name: KO_DOCKER_REPO
@@ -55,6 +53,33 @@ spec:
     volumeMounts:
     - name: workspace
       mountPath: workspace
+  #### kompose
+  - name: kompose
+    image: debian:buster
+    workingDir: /workspace
+    command:
+    - /bin/bash
+    - -exc
+    - |
+      apt-get update && apt-get install --no-install-recommends -y bash curl ca-certificates;
+      curl -L https://github.com/kubernetes/kompose/releases/download/v1.16.0/kompose-linux-amd64 -o kompose;
+      chmod u+x kompose;
+      mv kompose /usr/local/bin;
+      sleep infinity
+    volumeMounts:
+    - name: workspace
+      mountPath: workspace
+  #### kaniko
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    workingDir: /workspace
+    command:
+    - tail
+    - -f
+    - /dev/null
+    volumeMounts:
+    - name: workspace
+      mountPath: workspace
   #### docker with node's docker.sock mounted
   - name: docker
     securityContext:
@@ -70,14 +95,11 @@ spec:
       mountPath: workspace
     - name: docker-sock
       mountPath: /var/run/docker.sock
+  #### volumes for either or all of the containers
   volumes:
   - name: docker-sock
     hostPath:
       type: File
       path: /var/run/docker.sock
   - name: workspace
-  #  hostPath:
-  #    type: DirectoryOrCreate
-  #    path: /tmp/devpod1-workspace
-    # executables would get permission denied with hostPath on GKE
     emptyDir: {}
