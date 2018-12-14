@@ -42,7 +42,7 @@ kubectl create clusterrolebinding ko-runner --clusterrole=cluster-admin --servic
 kubectl run install-knative-build-pipeline --serviceaccount=ko-runner \
   --restart=Never --image=$korunner \
   --env="KO_SOURCE=github.com/knative/build-pipeline" \
-  --env="KO_REVISION=c8866cb41744b0e34bf1fdcaff565106db6c0a4c" \
+  --env="KO_REVISION=dbbee4990669f645f25e36f4500796baa7f591b1" \
   --env="INSTALL_THIRD_PARTY=_" \
   --env="EXIT_DELAY=3600"
 
