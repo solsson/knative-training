@@ -1,0 +1,13 @@
+# Inspired by https://gitkube.sh/ we push to a special origin to trigger a build
+apiVersion: v1
+kind: Service
+metadata:
+  name: builds
+  namespace: git
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+    name: web
+  selector:
+    app: gogs
