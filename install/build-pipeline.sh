@@ -19,8 +19,8 @@ kubectl label namespace default istio-injection=enabled
   KNATIVE_RELEASES=https://storage.googleapis.com/knative-releases
 }
 
-kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/istio-crds.yaml
-kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/istio.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.3/istio-crds.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.3/istio.yaml
 
 while [ $(kubectl get crd gateways.networking.istio.io -o jsonpath='{.status.conditions[?(@.type=="Established")].status}') != 'True' ]; do
   echo "Waiting on Istio CRDs"; sleep 1
@@ -29,11 +29,11 @@ while [ -z "$(kubectl -n istio-system get endpoints istio-sidecar-injector -o js
   echo "Waiting for istio-sidecar-injector to be ready"
 done
 
-kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/serving.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.3/serving.yaml
 
-kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/monitoring-metrics-prometheus.yaml
-kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/monitoring-tracing-zipkin-in-mem.yaml
-kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.2/monitoring-logs-elasticsearch.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.3/monitoring-metrics-prometheus.yaml
+kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.3/monitoring-tracing-zipkin-in-mem.yaml
+#kubectl apply -f ${KNATIVE_RELEASES}/serving/previous/v0.2.3/monitoring-logs-elasticsearch.yaml
 
 # https://github.com/solsson/go-ko-runner
 korunner=solsson/go-ko-runner@sha256:a1c2b790e59c7c482879181339fef03ca3486cf133691642b5feff482155f9e0
@@ -42,7 +42,7 @@ kubectl create clusterrolebinding ko-runner --clusterrole=cluster-admin --servic
 kubectl run install-knative-build-pipeline --serviceaccount=ko-runner \
   --restart=Never --image=$korunner \
   --env="KO_SOURCE=github.com/knative/build-pipeline" \
-  --env="KO_REVISION=9a3bb5476d40db42915036a16f7fe38491d846c4" \
+  --env="KO_REVISION=79a908e9e3836a3167b6e84545a4135ff51ffbbd" \
   --env="EXIT_DELAY=3600"
 
 # TODO can we do a wait like the above and after that delete the service account?
