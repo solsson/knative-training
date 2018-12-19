@@ -19,10 +19,10 @@ kubectl label namespace default istio-injection=enabled
   KNATIVE_RELEASES=https://storage.googleapis.com/knative-releases
 }
 
-SERVING_GIT=9dd4beb2f4b03a8aea12a9ae7c26326b5dab5981
+SERVING_GIT=6cd6c6046d746626f2d230a659ef3ec8f1f20882
 
-kubectl apply -f https://github.com/knative/serving/raw/${SERVING_GIT}/third_party/istio-1.0.4/istio-crds.yaml
-kubectl apply -f https://github.com/knative/serving/raw/${SERVING_GIT}/third_party/istio-1.0.4/istio.yaml
+kubectl apply -f https://github.com/knative/serving/raw/${SERVING_GIT}/third_party/istio-1.0.2/istio-crds.yaml
+kubectl apply -f https://github.com/knative/serving/raw/${SERVING_GIT}/third_party/istio-1.0.2/istio.yaml
 
 while [ $(kubectl get crd gateways.networking.istio.io -o jsonpath='{.status.conditions[?(@.type=="Established")].status}') != 'True' ]; do
   echo "Waiting on Istio CRDs"; sleep 1
