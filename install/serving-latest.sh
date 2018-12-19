@@ -47,7 +47,7 @@ kubectl run install-knative-serving --serviceaccount=ko-runner \
 kubectl run install-knative-build-pipeline --serviceaccount=ko-runner \
   --restart=Never --image=$korunner \
   --env="KO_SOURCE=github.com/knative/build-pipeline" \
-  --env="KO_REVISION=9d7e6d398426a74701f15024ca4b136c58515705" \
+  --env="KO_REVISION=6e91749a395b862cb70fdc2adef53c1c6ac514ea" \
   --env="EXIT_DELAY=3600"
 
 # TODO can we do a wait like the above and after that delete the service account?

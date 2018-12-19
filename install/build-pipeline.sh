@@ -42,7 +42,7 @@ kubectl create clusterrolebinding ko-runner --clusterrole=cluster-admin --servic
 kubectl run install-knative-build-pipeline --serviceaccount=ko-runner \
   --restart=Never --image=$korunner \
   --env="KO_SOURCE=github.com/knative/build-pipeline" \
-  --env="KO_REVISION=79a908e9e3836a3167b6e84545a4135ff51ffbbd" \
+  --env="KO_REVISION=6e91749a395b862cb70fdc2adef53c1c6ac514ea" \
   --env="EXIT_DELAY=3600"
 
 # TODO can we do a wait like the above and after that delete the service account?
