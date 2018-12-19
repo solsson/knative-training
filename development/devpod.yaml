@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: devpod
+  namespace: default
+spec:
+  serviceAccount: devpod
+  terminationGracePeriodSeconds: 3
+  containers:
+  #### ko
+  - name: ko
+    image: debian:buster
+    workingDir: /workspace
+    command:
+    - /bin/bash
+    - -exc
+    - |
+      apt-get update && apt-get install --no-install-recommends -y bash curl ca-certificates jq git golang;
+      mkdir -p go/bin/;
+      curl -SLs https://dl.k8s.io/v1.12.3/kubernetes-client-linux-amd64.tar.gz | tar xzf - --strip-components=3 -C go/bin/;
+      eval $( echo 'export GOPATH="/workspace/go"'     | tee -a /root/.bashrc );
+      eval $( echo 'export PATH=${PATH}:${GOPATH}/bin' | tee -a /root/.bashrc );
+      curl https://raw.githubusercontent.com/golang/dep/f0d88bbe4c99d3bf4a81ad42f27d09b3fd0b7e59/install.sh | sh;
+      go get github.com/google/go-containerregistry/cmd/ko;
+      mkdir -p ${GOPATH}/src/github.com/knative;
+      mkdir /root/.docker && echo '{}' > /root/.docker/config.json;
+      echo "You can now: kubectl exec -ti devpod -c ko bash";
+      sleep infinity
+    env:
+      # https://github.com/knative/serving/blob/master/DEVELOPMENT.md#setup-your-environment-
+    - name: KO_DOCKER_REPO
+      value: knative.registry.svc.cluster.local/devpod1
+    - name: DOCKER_REPO_OVERRIDE
+      value: knative.registry.svc.cluster.local/devpod1
+    volumeMounts:
+    - name: workspace
+      mountPath: workspace
+  #### kafkacat
+  - name: kafkacat
+    image: solsson/kafkacat@sha256:7a5961f861ddad53c25227511b9f36a5c13bc43296470b383be2f3e8e3a506f4
+    workingDir: /workspace
+    env:
+    - name: BOOTSTRAP
+      value: bootstrap.kafka:9092
+    command:
+    - /bin/bash
+    - -exc
+    - |
+      apt-get update && apt-get install --no-install-recommends -y jq;
+      tail -f /dev/null
+    volumeMounts:
+    - name: workspace
+      mountPath: workspace
+  #### kompose
+  - name: kompose
+    image: debian:buster
+    workingDir: /workspace
+    command:
+    - /bin/bash
+    - -exc
+    - |
+      apt-get update && apt-get install --no-install-recommends -y bash curl ca-certificates;
+      curl -L https://github.com/kubernetes/kompose/releases/download/v1.16.0/kompose-linux-amd64 -o kompose;
+      chmod u+x kompose;
+      mv kompose /usr/local/bin;
+      sleep infinity
+    volumeMounts:
+    - name: workspace
+      mountPath: workspace
+  #### kaniko
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    workingDir: /workspace
+    command:
+    - tail
+    - -f
+    - /dev/null
+    volumeMounts:
+    - name: workspace
+      mountPath: workspace
+  #### docker with node's docker.sock mounted
+  - name: docker
+    securityContext:
+      privileged: true
+    image: docker:18.06.1-ce-dind
+    workingDir: /workspace
+    command:
+    - tail
+    - -f
+    - /dev/null
+    volumeMounts:
+    - name: workspace
+      mountPath: workspace
+    - name: docker-sock
+      mountPath: /var/run/docker.sock
+  #### volumes for either or all of the containers
+  volumes:
+  - name: docker-sock
+    hostPath:
+      type: File
+      path: /var/run/docker.sock
+  - name: workspace
+    emptyDir: {}
