@@ -1,18 +1,17 @@
 #!/bin/bash
 set -e
 
-cat <<EOF
-k-keycloak scale --replicas=0 deploy kc
-k-monitoring scale --replicas=0 deploy prometheus-operator
-k-monitoring scale --replicas=0 deploy prometheus-adapter
-k-monitoring scale --replicas=0 deploy grafana
-k-monitoring scale --replicas=0 deploy kube-state-metrics
-k-monitoring scale --replicas=0 statefulset prometheus-k8s
-k-monitoring scale --replicas=0 statefulset alertmanager-main
-EOF
+kubectl -n keycloak scale --replicas=0 deploy kc
+kubectl -n monitoring scale --replicas=0 deploy prometheus-operator
+kubectl -n monitoring scale --replicas=0 deploy prometheus-adapter
+kubectl -n monitoring scale --replicas=0 deploy grafana
+kubectl -n monitoring scale --replicas=0 deploy kube-state-metrics
+kubectl -n monitoring scale --replicas=0 statefulset prometheus-k8s
+kubectl -n monitoring scale --replicas=0 statefulset alertmanager-main
+
 kubectl apply -f https://github.com/triggermesh/knative-local-registry/raw/master/templates/registry-service-knative.yaml
 
-../install/meetup-20190612.sh
+(cd ../install && ../install/meetup-20190612.sh)
 
 # We already have node-exporter, and node metrics isn't relevant for Knative demos
 kubectl -n knative-monitoring delete daemonset node-exporter
