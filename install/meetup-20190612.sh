@@ -22,42 +22,10 @@ metadata:
     istio-injection: disabled
 EOF
 
-export ISTIO_VERSION=1.1.8
-rm -r istio-*
-curl -o istio-${ISTIO_VERSION}-linux.tar.gz -L https://github.com/istio/istio/releases/download/${ISTIO_VERSION}/istio-${ISTIO_VERSION}-linux.tar.gz
-tar xvzf istio-${ISTIO_VERSION}-linux.tar.gz
-
-mkdir ./istio-${ISTIO_VERSION}-lean-unhelm
-helm template --namespace=istio-system \
-  --set prometheus.enabled=false \
-  --set mixer.enabled=false \
-  --set mixer.policy.enabled=false \
-  --set mixer.telemetry.enabled=true \
-  `# Pilot doesn't need a sidecar.` \
-  --set pilot.sidecar=false \
-  --set pilot.resources.requests.memory=128Mi \
-  `# Disable galley (and things requiring galley).` \
-  --set galley.enabled=false \
-  --set global.useMCP=false \
-  `# Disable security / policy.` \
-  --set security.enabled=false \
-  --set global.disablePolicyChecks=true \
-  `# Disable sidecar injection.` \
-  --set sidecarInjectorWebhook.enabled=false \
-  --set global.proxy.autoInject=disabled \
-  --set global.omitSidecarInjectorConfigMap=true \
-  `# Set gateway pods to 1 to sidestep eventual consistency / readiness problems.` \
-  --set gateways.istio-ingressgateway.autoscaleMin=1 \
-  --set gateways.istio-ingressgateway.autoscaleMax=1 \
-  `# Set pilot trace sampling to 100%` \
-  --set pilot.traceSampling=100 \
-  ./istio-${ISTIO_VERSION}/install/kubernetes/helm/istio \
-  --output-dir ./istio-${ISTIO_VERSION}-lean-unhelm
-
-for i in ./istio-${ISTIO_VERSION}/install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl apply -f $i; done
-
 kubectl label namespace default istio-injection=disabled --overwrite=true
-kubectl apply -R -f ./istio-${ISTIO_VERSION}-lean-unhelm/istio
+
+kubectl apply -f https://github.com/knative/serving/releases/download/v0.5.2/istio-crds.yaml
+curl -L https://github.com/knative/serving/releases/download/v0.5.2/istio-lean.yaml | sed 's/2048Mi/128Mi/' | kubectl apply -f -
 
 # https://knative.dev/docs/install/knative-with-any-k8s/#installing-knative
 
@@ -70,6 +38,7 @@ kubectl apply --selector knative.dev/crd-install=true \
    --filename https://github.com/knative/eventing-sources/releases/download/v0.6.0/eventing-sources.yaml \
    --filename https://github.com/knative/serving/releases/download/v0.6.1/monitoring.yaml \
    --filename https://raw.githubusercontent.com/knative/serving/v0.6.1/third_party/config/build/clusterrole.yaml
+sleep 1
 done
 
 kubectl apply --filename https://github.com/knative/serving/releases/download/v0.6.1/serving.yaml --selector networking.knative.dev/certificate-provider!=cert-manager \

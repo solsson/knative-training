@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: autoscale-go-testload
+spec:
+  template:
+    spec:
+      containers:
+      - name: hey
+        image: solsson/hey@sha256:18253b42fafa8d6b9dbc819cf585b7f3c3a1d845fce25ea3a959ae0689541983
+        args:
+        - -z
+        -   30s
+        - -c
+        -   "50"
+        - -host
+        -   autoscale-go--default.example.com
+        - http://istio-ingressgateway.istio-system.svc.cluster.local?sleep=100&prime=10000&bloat=5
+      restartPolicy: Never
+  backoffLimit: 0

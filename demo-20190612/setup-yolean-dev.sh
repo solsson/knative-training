@@ -32,35 +32,3 @@ kubectl -n knative-monitoring delete daemonset node-exporter
 
 kubectl apply -f config-network.yaml
 kubectl apply -f knative-demo-ingress.yaml
-
-curl -L https://github.com/knative/docs/raw/release-0.6/docs/serving/samples/autoscale-go/service.yaml | kubectl apply -f -
-IP_ADDRESS=$(minikube ip)
-curl -H 'Host: autoscale-go--default.example.com' "http://$IP_ADDRESS/?sleep=100&prime=10000&bloat=5"
-
-# https://github.com/knative/docs/tree/master/docs/eventing/samples/cronjob-source
-
-cat <<EOF | kubectl apply -f -
-apiVersion: serving.knative.dev/v1alpha1
-kind: Service
-metadata:
-  name: event-display
-spec:
-  template:
-    spec:
-      containers:
-        - image: gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display
-EOF
-
-cat <<EOF | kubectl apply -f -
-apiVersion: sources.eventing.knative.dev/v1alpha1
-kind: CronJobSource
-metadata:
-  name: test-cronjob-source
-spec:
-  schedule: "*/2 * * * *"
-  data: '{"message": "Hello world!"}'
-  sink:
-    apiVersion: serving.knative.dev/v1alpha1
-    kind: Service
-    name: event-display
-EOF
