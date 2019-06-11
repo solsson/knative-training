@@ -32,7 +32,7 @@ helm template --namespace=istio-system \
   --set prometheus.enabled=false \
   --set mixer.enabled=false \
   --set mixer.policy.enabled=false \
-  --set mixer.telemetry.enabled=false \
+  --set mixer.telemetry.enabled=true \
   `# Pilot doesn't need a sidecar.` \
   --set pilot.sidecar=false \
   --set pilot.resources.requests.memory=128Mi \
