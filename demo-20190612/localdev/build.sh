@@ -5,7 +5,7 @@ kubectl apply -f build-template-kaniko.yaml
 kubectl apply -f build.yaml
 
 sleep 1
-BUILDPOD=$(kubectl get pods -l build.knative.dev/buildName=wait-html -o=jsonpath='{.items[0].metadata.name}')
+BUILDPOD=$(kubectl get pods -l build.knative.dev/buildName=localdev-kaniko -o=jsonpath='{.items[0].metadata.name}')
 echo "Buildpod: $BUILDPOD"
 
 until kubectl logs -c build-step-custom-source $BUILDPOD; do
@@ -14,7 +14,7 @@ until kubectl logs -c build-step-custom-source $BUILDPOD; do
 done
 
 echo "Copying source, with the awaited file last"
-for f in index.html Dockerfile; do
+for f in index.js Dockerfile; do
   kubectl cp $f $BUILDPOD:/workspace -c build-step-custom-source
 done
 
