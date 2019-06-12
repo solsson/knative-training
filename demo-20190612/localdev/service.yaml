@@ -7,4 +7,4 @@ spec:
   template:
     spec:
       containers:
-      - image: builds.registry.svc.cluster.local/knative-training/server@sha256:005aa282bc604c2677f65cc72b1fbf91579d665f67e228040da63d35d3461b46
+      - image: builds.registry.svc.cluster.local/knative-training/server
