@@ -16,8 +16,6 @@ spec:
     args:
     - --insecure-registry
     -   builds.registry.svc.cluster.local
-    - -v
-    -   debug
     - --dockerfile=${DOCKERFILE}
     - --destination=${IMAGE}
     env:

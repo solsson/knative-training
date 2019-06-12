@@ -6,7 +6,7 @@ const port = process.env.PORT || 8080;
 const GREETING = 'Hello';
 
 const server = http.createServer((req, res) => {
-  console.log('Got request', req.url, req.headers);
+  console.log(new Date().toISOString(), req.url, req.headers['x-request-id'], req.headers['user-agent']);
   const reqstatus = /\W(\d{3})$/.exec(req.url);
   const status = reqstatus ? parseInt(reqstatus[1]) : 200;
   const reqdelay = /\Wdelay=(\d+)/.exec(req.url);

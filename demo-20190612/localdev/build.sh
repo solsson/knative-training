@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl delete -f build.yaml --timeout=0s --force=true 2>&1 >/dev/null
+kubectl delete -f build.yaml --grace-period=0 --force=true 2>&1 >/dev/null
 kubectl apply -f build-template-kaniko.yaml
 kubectl apply -f build.yaml
 
