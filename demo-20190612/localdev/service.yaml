@@ -1,0 +1,10 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: html
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - image: builds.registry.svc.cluster.local/knative-training/html@sha256:9899754afbaf051351832ebe1e7d0f687cd5432e38eda249480a5821b1921ef2
