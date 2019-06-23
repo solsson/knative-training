@@ -1,0 +1,10 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: localdev
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - image: builds.registry.svc.cluster.local/knative-training/server

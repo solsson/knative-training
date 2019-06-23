@@ -1,0 +1,14 @@
+apiVersion: build.knative.dev/v1alpha1
+kind: Build
+metadata:
+  name: localdev-kaniko
+spec:
+  template:
+    name: kaniko
+    arguments:
+    - name: IMAGE
+      value: builds.registry.svc.cluster.local/knative-training/server:latest
+  source:
+    custom:
+      image: busybox@sha256:c888d69b73b5b444c2b0bd70da28c3da102b0aeb327f3a297626e2558def327f
+      args: ["/bin/sh", "-ce", "while [ ! -f /workspace/Dockerfile ]; do echo 'Waiting for a Dockerfile to be copied to /workspace/' && sleep 1; done;"]
