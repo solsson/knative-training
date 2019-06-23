@@ -19,12 +19,22 @@ kubectl run install-knative-serving --serviceaccount=ko-runner \
   --env="EXIT_DELAY=3600" \
   --env="KO_DOCKER_REPO=builds.registry.svc.cluster.local/knative-serving"
 
-
 until kubectl -n knative-serving wait --for=condition=Ready --timeout=1s pod -l app=controller; do
   echo "Waiting for Serving to be ready ..."
   kubectl logs --tail=1 install-knative-serving || echo "Installer not running yet"
   sleep 30
 done
+
+# avoid subdomains
+cat << EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-network
+  namespace: knative-serving
+data:
+  domainTemplate: "{{.Name}}--{{.Namespace}}.{{.Domain}}"
+EOF
 
 kubectl run install-knative-eventing --serviceaccount=ko-runner \
   --restart=Never --image=$korunner \
