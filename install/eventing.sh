@@ -53,3 +53,21 @@ kubectl run install-knative-eventing-channel-inmemory --serviceaccount=ko-runner
   --env="KO_REVISION=108d062deb9d52955d866a75c5955df2d21f4cf0" \
   --env="KO_DOCKER_REPO=builds.registry.svc.cluster.local/knative-eventing" \
   --env="KO_APPLY_PATH=config/provisioners/in-memory-channel/in-memory-channel.yaml"
+
+kubectl run install-knative-eventing-channel-kafka --serviceaccount=ko-runner \
+  --restart=Never --image=$korunner \
+  --env="KO_SOURCE=github.com/knative/eventing" \
+  --env="KO_REVISION=108d062deb9d52955d866a75c5955df2d21f4cf0" \
+  --env="KO_DOCKER_REPO=builds.registry.svc.cluster.local/knative-eventing" \
+  --env="KO_APPLY_PATH=contrib/kafka/config"
+
+# Must be done after apply
+cat << EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-kafka
+  namespace: knative-eventing
+data:
+  bootstrapServers: bootstrap.kafka:9092
+EOF
